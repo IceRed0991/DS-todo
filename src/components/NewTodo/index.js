@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+import "./style.css";
 
-const NewTodo = () => {
+const NewTodo = ({ onNewTodo }) => {
   const [value, setValue] = useState("");
   const ESCAPE_KEY = 27;
   const ENTER_KEY = 13;
@@ -10,19 +12,12 @@ const NewTodo = () => {
   };
 
   const submit = () => {
-    console.log("submit -", value);
-
-    setTodos([
-      ...todos,
-      {
-        id: new Date().getTime(),
-        title: value,
-        checked: false,
-      },
-    ]);
-
-    erase();
+    if (onNewTodo) {
+      onNewTodo(value);
+      erase();
+    }
   };
+
   const onChange = (event) => {
     setValue(event.target.value);
   };
@@ -48,4 +43,7 @@ const NewTodo = () => {
   );
 };
 
+NewTodo.propTypes = {
+  onNewTodo: PropTypes.func.isRequired,
+};
 export default NewTodo;
